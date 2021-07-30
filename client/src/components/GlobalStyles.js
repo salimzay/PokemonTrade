@@ -5,6 +5,13 @@ export default createGlobalStyle`
       v2.0 | 20110126
       License: none (public domain)
   */
+  
+  :root {
+    --background-color: rgba(50,50,50,1);
+    --main-color: white;
+    --main-font: 'Poppins', sans-serif;
+    --second-font: 'Roboto', sans-serif;
+  }
 
   html, body, div, span, applet, object, iframe,
   h1, h2, h3, h4, h5, h6, p, blockquote, pre,
@@ -33,6 +40,9 @@ export default createGlobalStyle`
   }
   body {
     line-height: 1;
+    background-color: var(--background-color);
+    color: var(--main-color);
+    font-family: var(--main-font);
   }
   ol, ul {
     list-style: none;
