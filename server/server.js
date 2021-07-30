@@ -6,6 +6,7 @@ const {
 	updateUser,
 	deleteUser,
 	getUsersId,
+	userLogin,
 } = require("./handlers");
 
 require("dotenv").config();
@@ -22,6 +23,7 @@ express()
 	.get("/api/users/:_id", getUser)
 	.put("/api/users/:_id", updateUser)
 	.delete("/api/users/:_id", deleteUser)
+	.post("/api/users/login/", userLogin)
 	.get("*", (req, res) => {
 		res.status(404).json({ status: 404, message: "Page not Found" });
 	})

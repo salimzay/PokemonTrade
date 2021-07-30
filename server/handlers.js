@@ -141,4 +141,37 @@ const deleteUser = async (req, res) => {
 	}
 };
 
-module.exports = { createUser, getUser, getUsersId, updateUser, deleteUser };
+const userLogin = async (req, res) => {
+	const { username, password } = req.body;
+	try {
+		const client = await connectToClient(MONGO_URI, options);
+		const db = await client.db(dbName);
+
+		const user = await db.collection("users").findOne({ username: username });
+
+		if (user) {
+			if (user.password === password) {
+				res.status(200).json({ status: 200, data: user });
+			} else {
+				res
+					.status(404)
+					.json({ status: 404, message: "Username or password is incorrect" });
+			}
+		} else {
+			res
+				.status(404)
+				.json({ status: 404, message: "Username or password is incorrect" });
+		}
+	} catch (err) {
+		sendCatchError(err, res);
+	}
+};
+
+module.exports = {
+	createUser,
+	getUser,
+	getUsersId,
+	updateUser,
+	deleteUser,
+	userLogin,
+};
