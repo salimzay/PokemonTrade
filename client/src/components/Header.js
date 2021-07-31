@@ -1,17 +1,23 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 import styled from "styled-components";
 import { UserContext } from "../contexts/UserContext";
 
 const Header = () => {
 	const { currentUser } = useContext(UserContext);
+
 	return (
 		<Wrapper>
 			<Title>
 				<StyledNavLink exact to="/">
-					PokeTrade
+					PokemonTrade
 				</StyledNavLink>
 			</Title>
+			<StyledNavItem>
+				<StyledNavLink exact to="/browse">
+					Browse
+				</StyledNavLink>
+			</StyledNavItem>
 			<StyledNavItem>SearchBar</StyledNavItem>
 			<div>
 				{currentUser ? (
@@ -55,9 +61,11 @@ const Wrapper = styled.div`
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
-	padding: 1rem;
-	background-color: rgba(0, 0, 0, 0.2);
+	padding: 1rem 0;
+	background-color: var(--background-darken);
 	margin-bottom: 2rem;
+	height: 40px;
+	width: 100vw;
 `;
 
 const StyledNavLink = styled(NavLink)`
@@ -77,6 +85,8 @@ const StyledNavLink = styled(NavLink)`
 const Title = styled.h1`
 	font-size: 30px;
 	font-weight: 900;
+	margin-right: 1rem;
+	padding-left: 1rem;
 `;
 
 const RightSide = styled.div`
@@ -86,7 +96,8 @@ const RightSide = styled.div`
 `;
 
 const StyledNavItem = styled.div`
-	margin: 0 1rem;
+	margin: 0 2rem;
+	margin-right: auto;
 `;
 
 const StyledButton = styled.button`
@@ -102,6 +113,10 @@ const StyledButton = styled.button`
 	&:hover {
 		background-color: var(--main-color);
 		color: var(--background-color);
+	}
+
+	&:last-child {
+		margin-right: 1rem;
 	}
 `;
 

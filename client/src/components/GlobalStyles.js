@@ -8,6 +8,8 @@ export default createGlobalStyle`
   
   :root {
     --background-color: rgba(50,50,50,1);
+    --background-darken: rgba(0, 0, 0, 0.2);
+    --background-lighten: rgba(255,255,255,0.1);
     --main-color: white;
     --main-font: 'Poppins', sans-serif;
     --second-font: 'Roboto', sans-serif;
@@ -39,7 +41,7 @@ export default createGlobalStyle`
     display: block;
   }
   body {
-    line-height: 1;
+    line-height: 1.5;
     background-color: var(--background-color);
     color: var(--main-color);
     font-family: var(--main-font);
