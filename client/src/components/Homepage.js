@@ -170,7 +170,7 @@ const ImagesSlide = styled.div`
 const Image = styled.img`
 	@keyframes Slide {
 		to {
-			transform: translateX(calc(-192vw - 1rem));
+			transform: translateX(-192vw);
 		}
 	}
 	width: 12vw;
