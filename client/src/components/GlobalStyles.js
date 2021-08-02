@@ -13,6 +13,18 @@ export default createGlobalStyle`
     --main-color: white;
     --main-font: 'Poppins', sans-serif;
     --second-font: 'Roboto', sans-serif;
+    --default-card: rgba(200,200,200,0.2);
+    --Colorless: rgba(200,200,200,0.2);
+    --Darkness: rgba(0,0,100,0.2);
+    --Dragon: rgba(200,175,50,0.2);
+    --Fairy: rgba(200,75,130, 0.2);
+    --Fighting: rgba(200,150,100,0.2);
+    --Fire: rgba(220,75,45,0.2);
+    --Grass: rgba(170,200,100,0.2);
+    --Lightning: rgba(240,210,75,0.2);
+    --Metal: rgba(100,100,120,0.2);
+    --Psychic: rgba(160,70,130,0.2);
+    --Water: rgba(60,140,200,0.2);
   }
 
   html, body, div, span, applet, object, iframe,

@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 import styled from "styled-components";
 import { UserContext } from "../contexts/UserContext";
+import Loading from "./Loading";
 
 const Homepage = () => {
 	const { currentUser } = useContext(UserContext);
@@ -13,12 +14,12 @@ const Homepage = () => {
 		}
 	}, []);
 
-	const [images, setImages] = useState([]);
+	const [images, setImages] = useState(null);
 	useEffect(() => {
 		fetch("https://api.pokemontcg.io/v2/cards?q=set.id:base1", {
-			header: {
+			headers: {
 				"Content-Type": "application/json",
-				"X-Api-Key": "6c67144d-43d0-47b9-8343-67158c555011",
+				"X-Api-Key": process.env.REACT_APP_POKETCG_API_KEY,
 			},
 		})
 			.then((res) => res.json())
@@ -26,7 +27,7 @@ const Homepage = () => {
 				const imagesArray = [];
 				parsed.data.forEach((card) => {
 					if (card.supertype === "Pokémon" && card.rarity === "Rare Holo") {
-						imagesArray.push(card.images.large);
+						imagesArray.push(card.images.small);
 					}
 				});
 				console.log([...imagesArray, ...imagesArray]);
@@ -65,7 +66,7 @@ const Homepage = () => {
 				</Wrapper>
 			)}
 			<ImagesSlide>
-				{images &&
+				{images ? (
 					images.map((image) => {
 						key++;
 						return (
@@ -79,7 +80,10 @@ const Homepage = () => {
 								}}
 							></Image>
 						);
-					})}
+					})
+				) : (
+					<Loading />
+				)}
 			</ImagesSlide>
 		</SuperWrapper>
 	);
