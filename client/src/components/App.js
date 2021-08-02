@@ -8,6 +8,7 @@ import { UserContext } from "../contexts/UserContext";
 import Header from "./Header";
 import Homepage from "./Homepage";
 import Footer from "./Footer";
+import Browse from "./Browse";
 
 const App = () => {
 	const { currentUser } = useContext(UserContext);
@@ -27,6 +28,9 @@ const App = () => {
 							</Route>
 							<Route exact path="/login">
 								<Login />
+							</Route>
+							<Route path="/browse">
+								<Browse />
 							</Route>
 						</Switch>
 					</Main>

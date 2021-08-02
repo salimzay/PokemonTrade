@@ -63,9 +63,9 @@ const Wrapper = styled.div`
 	align-items: center;
 	padding: 1rem 0;
 	background-color: var(--background-darken);
-	margin-bottom: 2rem;
+	border-bottom: 1px solid var(--main-color);
 	height: 40px;
-	width: 100vw;
+	max-width: 100vw;
 `;
 
 const StyledNavLink = styled(NavLink)`
