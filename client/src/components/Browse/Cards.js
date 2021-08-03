@@ -20,8 +20,15 @@ const Cards = () => {
 
 	useEffect(() => {
 		setCardsStatus("loading");
+		let apiName = name;
+		let apiValue = value;
+		if (name === "name") {
+			apiValue = `${value}*`;
+		} else {
+			apiName = `!${name}`;
+		}
 		fetch(
-			`https://api.pokemontcg.io/v2/cards?q=!${name}:"${value}"&page=${pageNumber}&pageSize=${cardsPerPage}`,
+			`https://api.pokemontcg.io/v2/cards?q=${apiName}:"${apiValue}"&page=${pageNumber}&pageSize=${cardsPerPage}`,
 			{
 				headers: {
 					"content-type": "application/json",
@@ -47,10 +54,13 @@ const Cards = () => {
 				.then((res) => res.json())
 				.then((parsed) => {
 					setHeaderName(parsed.data.name);
+
 					setBannerImg(parsed.data.images.logo);
 				});
 		} else {
-			setHeaderName(value);
+			name === "name"
+				? setHeaderName(`Search for: ${value}`)
+				: setHeaderName(value);
 			setBannerImg("");
 		}
 	}, [name, value, pageNumber, cardsPerPage]);

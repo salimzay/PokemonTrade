@@ -2,6 +2,7 @@ import React, { useContext } from "react";
 import { NavLink } from "react-router-dom";
 import styled from "styled-components";
 import { UserContext } from "../contexts/UserContext";
+import Searchbar from "./Searchbar";
 
 const Header = () => {
 	const { currentUser } = useContext(UserContext);
@@ -22,7 +23,9 @@ const Header = () => {
 					Browse
 				</StyledNavLink>
 			</StyledNavItem>
-			<StyledNavItem>SearchBar</StyledNavItem>
+			<StyledNavItem>
+				<Searchbar length="5" />
+			</StyledNavItem>
 			<div>
 				{currentUser ? (
 					<RightSide>
