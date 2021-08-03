@@ -28,18 +28,37 @@ const sendCatchError = (err, res) => {
 
 // Create User
 const createUser = async (req, res) => {
-	const { username, firstName, lastName, password } = req.body;
-	if (username && firstName && lastName && password) {
+	const { username, firstName, lastName, password, email } = req.body;
+	if (username && firstName && lastName && password && email) {
 		const _id = uuidv4();
-		const newBody = { _id, ...req.body };
+		const list = [];
+		const wishList = [];
+		const newBody = { _id, list, wishList, ...req.body };
 		try {
 			const client = await connectToClient(MONGO_URI, options);
 
 			const db = client.db(dbName);
-			const result = await db.collection("users").insertOne(newBody);
-			assert.equal(true, result.acknowledged);
+			const existingEmail = await db.collection("users").findOne({ email });
+			if (!existingEmail) {
+				const existingUsername = await db
+					.collection("users")
+					.findOne({ username });
+				if (!existingUsername) {
+					const result = await db.collection("users").insertOne(newBody);
+					assert.equal(true, result.acknowledged);
 
-			res.status(201).json({ status: 201, success: true, data: newBody });
+					res.status(201).json({ status: 201, success: true, data: newBody });
+				} else {
+					res
+						.status(400)
+						.json({ status: 400, message: "That username is already taken" });
+				}
+			} else {
+				console.log(existingEmail);
+				res
+					.status(400)
+					.json({ status: 400, message: "That email is already taken" });
+			}
 		} catch (err) {
 			sendCatchError(err, res);
 		}
@@ -95,18 +114,17 @@ const updateUser = async (req, res) => {
 
 		if (user) {
 			const query = { _id };
+			console.log(req.body);
 			const newValues = { $set: { ...req.body } };
 
 			const result = await db.collection("users").updateOne(query, newValues);
-			assert.equal(1, result.matchedCount);
-			assert.equal(1, result.modifiedCount);
 
 			res.status(200).json({ status: 200, success: true, data: req.body });
 		} else {
 			res.status(404).json({ status: 404, message: "User not found" });
 		}
 	} catch (err) {
-		sendCatchError(err, res);
+		sendCatchError(err.stack, res);
 	}
 };
 

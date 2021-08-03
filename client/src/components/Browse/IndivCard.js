@@ -4,10 +4,14 @@ import styled from "styled-components";
 import Loading from "../Loading";
 import { UserContext } from "../../contexts/UserContext";
 
-const IndivCard = () => {
+const IndivCard = ({ path }) => {
 	const { id } = useParams();
 	const [card, setCard] = useState(null);
 	const [cardStatus, setCardStatus] = useState("idle");
+	const [inList, setInList] = useState(false);
+	const [listMessage, setListMessage] = useState("");
+	const [inWishList, setInWishList] = useState(false);
+	const [wishListMessage, setWishListMessage] = useState("");
 	const { currentUser } = useContext(UserContext);
 
 	useEffect(() => {
@@ -21,13 +25,103 @@ const IndivCard = () => {
 			.then((res) => res.json())
 			.then((parsed) => {
 				setCard(parsed.data);
-				console.log(parsed.data);
+				if (currentUser) {
+					const checkList = currentUser.list.some(
+						(card) => card.id === parsed.data.id
+					);
+					setInList(checkList);
+
+					checkList
+						? setListMessage("Remove from List")
+						: setListMessage("Add to List");
+
+					const checkWishList = currentUser.wishList.some(
+						(card) => card.id === parsed.data.id
+					);
+					setInWishList(checkWishList);
+
+					checkWishList
+						? setWishListMessage("Remove from Wish List")
+						: setWishListMessage("Add to Wish List");
+				}
 				setCardStatus("idle");
 			});
-	}, []);
+	}, [currentUser]);
 
 	const capitalize = (string) => {
 		return string[0].toUpperCase() + string.slice(1);
+	};
+
+	const handleMyList = (card) => {
+		console.log(card);
+		const user = JSON.parse(localStorage.getItem("currentUser"));
+		let indexOfCard = user.list.findIndex(
+			(listCard) => listCard.id === card.id
+		);
+		console.log(indexOfCard);
+		if (indexOfCard !== -1) {
+			user.list.splice(indexOfCard, 1);
+		} else {
+			user.list.push({ id: card.id });
+		}
+		const request = JSON.stringify({ list: user.list });
+
+		localStorage.setItem("currentUser", JSON.stringify(user));
+		setListMessage("Loading...");
+		fetch(`/api/users/${user._id}`, {
+			method: "PUT",
+			headers: {
+				"content-type": "application/json",
+			},
+			body: request,
+		})
+			.then((res) => res.json())
+			.then((parsed) => {
+				setInList(!inList);
+				setListMessage(inList ? "Removed from List" : "Added to List");
+				setTimeout(() => {
+					setListMessage(inList ? "Add to List" : "Remove from List");
+				}, 1000);
+			});
+		console.log(user);
+	};
+
+	const handleWishList = (card) => {
+		console.log(card);
+		const user = JSON.parse(localStorage.getItem("currentUser"));
+		let indexOfCard = user.wishList.findIndex(
+			(listCard) => listCard.id === card.id
+		);
+		console.log(indexOfCard);
+		if (indexOfCard !== -1) {
+			user.wishList.splice(indexOfCard, 1);
+		} else {
+			user.wishList.push({ id: card.id });
+		}
+		const request = JSON.stringify({ wishList: user.wishList });
+
+		localStorage.setItem("currentUser", JSON.stringify(user));
+		setWishListMessage("Loading...");
+		fetch(`/api/users/${user._id}`, {
+			method: "PUT",
+			headers: {
+				"content-type": "application/json",
+			},
+			body: request,
+		})
+			.then((res) => res.json())
+			.then((parsed) => {
+				setInWishList(!inWishList);
+				setWishListMessage(
+					inWishList ? "Removed from Wish List" : "Added to Wish List"
+				);
+				setTimeout(() => {
+					setWishListMessage(
+						inWishList ? "Add to Wish List" : "Remove from Wish List"
+					);
+				}, 1000);
+			});
+		console.log(user);
 	};
 
 	return (
@@ -55,10 +149,10 @@ const IndivCard = () => {
 										{card.set.name}
 									</DataValue>
 								</DataEntry>
-								<DataEntry>
+								{/* <DataEntry>
 									<DataName></DataName>
 									<DataValue></DataValue>
-								</DataEntry>
+								</DataEntry> */}
 							</DataBlock>
 							<PriceBlock>
 								<PriceHeader>Prices</PriceHeader>
@@ -75,7 +169,7 @@ const IndivCard = () => {
 								<StyledPrices>
 									{Object.keys(card.tcgplayer.prices).map((foil) => {
 										return (
-											<Container>
+											<Container key={foil}>
 												<div>{capitalize(foil)}</div>
 												<div>
 													{`$${Number(
@@ -90,11 +184,29 @@ const IndivCard = () => {
 							{currentUser ? (
 								<ButtonBlock>
 									<div>
-										<StyledButton className="wishlist">
-											Add to Wishlist
+										<StyledButton
+											className={`wishlist ${
+												wishListMessage === "Added to Wish List"
+													? "green"
+													: wishListMessage === "Removed from Wish List"
+													? "red"
+													: ""
+											}`}
+											onClick={() => handleWishList(card)}
+										>
+											{wishListMessage}
 										</StyledButton>
-										<StyledButton className="mylist">
-											Add to Your List
+										<StyledButton
+											className={`mylist ${
+												listMessage === "Added to List"
+													? "green"
+													: listMessage === "Removed from List"
+													? "red"
+													: ""
+											}`}
+											onClick={() => handleMyList(card)}
+										>
+											{listMessage}
 										</StyledButton>
 									</div>
 									<StyledButton className="search">
@@ -109,8 +221,8 @@ const IndivCard = () => {
 										card
 									</div>
 									<div>
-										<StyledLink to="/login">Login</StyledLink>
-										<StyledLink to="/register">Register</StyledLink>
+										<StyledLink href="/login">Login</StyledLink>
+										<StyledLink href="/register">Register</StyledLink>
 									</div>
 								</ButtonBlock>
 							)}
@@ -149,8 +261,7 @@ const StyledCardInfo = styled.div`
 const CardImage = styled.img`
 	/* width: 80%;
 	max-width: 400px; */
-	height: 60vh;
-	min-height: fit-content;
+	max-height: 60vh;
 	max-width: 100%;
 	margin: 1rem auto;
 `;
@@ -251,11 +362,12 @@ const ButtonBlock = styled.div`
 const StyledButton = styled.button`
 	font-size: inherit;
 	color: inherit;
-	width: 9rem;
+	width: 12rem;
 	height: 2.5rem;
 	background-color: transparent;
 	border: 1px solid white;
 	cursor: pointer;
+	transition: all 100ms;
 
 	&:hover {
 		box-shadow: 0 0 2px white, 0 0 2px white;
@@ -269,9 +381,17 @@ const StyledButton = styled.button`
 	&.search {
 		display: block;
 	}
+
+	&.green {
+		background-color: rgba(50, 200, 50, 0.9);
+	}
+
+	&.red {
+		background-color: rgba(200, 50, 50, 0.9);
+	}
 `;
 
-const StyledLink = styled(Link)`
+const StyledLink = styled.a`
 	background-color: transparent;
 	border: 1px solid white;
 	font-size: inherit;

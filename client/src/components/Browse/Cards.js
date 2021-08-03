@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useParams } from "react-router-dom";
-import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
+import {} from "react-icons/fi";
 import CardBlock from "./CardBlock";
 import Pagination from "./Pagination";
 import Loading from "../Loading";
@@ -57,7 +57,7 @@ const Cards = () => {
 
 	return (
 		<Wrapper>
-			<Banner backgroundImg={bannerImg}>
+			<Banner>
 				{bannerImg && <BannerImage src={bannerImg} alt="Banner"></BannerImage>}
 				{headerName[0].toUpperCase() + headerName.slice(1)}
 			</Banner>

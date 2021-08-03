@@ -1,10 +1,14 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext } from "react";
 import { NavLink } from "react-router-dom";
 import styled from "styled-components";
 import { UserContext } from "../contexts/UserContext";
 
 const Header = () => {
 	const { currentUser } = useContext(UserContext);
+	const handleLogout = (ev) => {
+		localStorage.removeItem("currentUser");
+		window.location.replace("/");
+	};
 
 	return (
 		<Wrapper>
@@ -35,7 +39,7 @@ const Header = () => {
 							<StyledNavLink to="#">Profile</StyledNavLink>
 						</StyledNavItem>
 						<StyledNavItem>
-							<StyledButton>Logout</StyledButton>
+							<StyledButton onClick={handleLogout}>Logout</StyledButton>
 						</StyledNavItem>
 					</RightSide>
 				) : (
