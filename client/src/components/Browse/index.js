@@ -17,23 +17,21 @@ const Browse = () => {
 	console.log(path, url);
 	return (
 		<Wrapper>
-			<Router>
-				<Sidebar />
-				<Switch>
-					<Route exact path={`${url}`}>
-						<Home />
-					</Route>
-					<Route exact path={`${url}/category/:name/:value`}>
-						<Cards />
-					</Route>
-					<Route exact path={`${url}/sets`}>
-						<Sets path={path} />
-					</Route>
-					<Route exact path={`${url}/card/:id`}>
-						<IndivCard path={path} />
-					</Route>
-				</Switch>
-			</Router>
+			<Sidebar />
+			<Switch>
+				<Route exact path={`${path}`}>
+					<Home />
+				</Route>
+				<Route exact path={`${path}/category/:name/:value`}>
+					<Cards />
+				</Route>
+				<Route exact path={`${path}/sets`}>
+					<Sets path={path} />
+				</Route>
+				<Route exact path={`${path}/card/:id`}>
+					<IndivCard path={path} />
+				</Route>
+			</Switch>
 		</Wrapper>
 	);
 };

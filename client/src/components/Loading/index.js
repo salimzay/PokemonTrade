@@ -1,12 +1,16 @@
-import React from "react";
+import React, { useState } from "react";
 import gif from "./pokeball.gif";
 import styled from "styled-components";
 
 const Loading = () => {
+	const [message, setMessage] = useState("Loading");
+	setTimeout(() => {
+		setMessage("Taking too long? Try reloading your browser");
+	}, 5000);
 	return (
 		<Wrapper>
 			<StyledGif src={gif} alt="Loading"></StyledGif>
-			<StyledText>Loading</StyledText>
+			<StyledText>{message}</StyledText>
 		</Wrapper>
 	);
 };

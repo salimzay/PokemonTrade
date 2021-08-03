@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import Searchbar from "../Searchbar";
 
 const Home = () => {
 	return (
@@ -12,7 +13,7 @@ const Home = () => {
 					You can also search for any card you want using the searchbar below
 				</SubHeader>
 			</Container>
-			<div>Searchbar</div>
+			<Searchbar length="15" />
 		</Wrapper>
 	);
 };

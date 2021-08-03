@@ -46,7 +46,7 @@ const IndivCard = ({ path }) => {
 				}
 				setCardStatus("idle");
 			});
-	}, [currentUser]);
+	}, [currentUser, id]);
 
 	const capitalize = (string) => {
 		return string[0].toUpperCase() + string.slice(1);
@@ -137,12 +137,14 @@ const IndivCard = ({ path }) => {
 								<DataEntry>
 									<StyledName>{card.name}</StyledName>
 								</DataEntry>
-								<DataEntry>
-									<DataName>Rarity</DataName>
-									<DataValue to={`/browse/category/rarity/${card.rarity}`}>
-										{card.rarity.replace("Rare ", "")}
-									</DataValue>
-								</DataEntry>
+								{card.rarity && (
+									<DataEntry>
+										<DataName>Rarity</DataName>
+										<DataValue to={`/browse/category/rarity/${card.rarity}`}>
+											{card.rarity.replace("Rare ", "")}
+										</DataValue>
+									</DataEntry>
+								)}
 								<DataEntry>
 									<DataName>Set</DataName>
 									<DataValue to={`/browse/category/set.name/${card.set.name}`}>
@@ -350,6 +352,7 @@ const Container = styled.div`
 
 const ButtonBlock = styled.div`
 	width: 100%;
+	max-width: 25vw;
 	height: 6rem;
 	display: flex;
 	flex-direction: column;
