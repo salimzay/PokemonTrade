@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
 import { FiCheckCircle } from "react-icons/fi";
 import { UserContext } from "../../contexts/UserContext";
@@ -6,25 +6,61 @@ import { Link } from "react-router-dom";
 
 const CardBlock = ({ card }) => {
 	const [checked, setChecked] = useState(false);
+	const [focused, setFocused] = useState(false);
 	const { currentUser } = useContext(UserContext);
 
-	const handleCheck = (ev) => {
-		ev.preventDefault();
-		setChecked(!checked);
-	};
+	useEffect(() => {
+		if (currentUser) {
+			const inList = currentUser.list.some(
+				(listCard) => listCard.id === card.id
+			);
+			console.log(inList);
+			setChecked(inList);
+		}
+	}, []);
+
+	// const handleCheck = (ev) => {
+	// 	ev.preventDefault();
+	// 	const user = JSON.parse(localStorage.getItem("currentUser"));
+	// 	let indexOfCard = user.list.findIndex(
+	// 		(listCard) => listCard.id === card.id
+	// 	);
+	// 	console.log(indexOfCard);
+	// 	if (indexOfCard !== -1) {
+	// 		user.list.splice(indexOfCard, 1);
+	// 	} else {
+	// 		user.list.push({ id: card.id });
+	// 	}
+	// 	const request = JSON.stringify({ list: user.list });
+
+	// 	localStorage.setItem("currentUser", JSON.stringify(user));
+	// 	fetch(`/api/users/${user._id}`, {
+	// 		method: "PUT",
+	// 		headers: {
+	// 			"content-type": "application/json",
+	// 		},
+	// 		body: request,
+	// 	})
+	// 		.then((res) => res.json())
+	// 		.then((parsed) => {
+	// 			setChecked(!checked);
+	// 		});
+	// 	window.location.reload();
+	// };
+
 	return (
 		<Wrapper
 			to={`/browse/card/${card.id}`}
 			type={card.types ? card.types[0] : "default-card"}
 		>
-			{currentUser && (
+			{/* {currentUser && (
 				<CheckButton onClick={handleCheck}>
 					<StyledCheck
 						fill={checked ? "green" : "white"}
 						color={checked ? "white" : ""}
 					/>
 				</CheckButton>
-			)}
+			)} */}
 			<StyledCard src={card.images.small} alt="card-pic"></StyledCard>
 			<Name>{card.name}</Name>
 			<Set>Set: {card.set.name}</Set>

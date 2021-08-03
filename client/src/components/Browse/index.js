@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import {
 	BrowserRouter as Router,
 	Switch,
@@ -20,17 +20,17 @@ const Browse = () => {
 			<Router>
 				<Sidebar />
 				<Switch>
-					<Route exact path="/browse">
+					<Route exact path={`${url}`}>
 						<Home />
 					</Route>
-					<Route exact path={`/browse/category/:name/:value`}>
+					<Route exact path={`${url}/category/:name/:value`}>
 						<Cards />
 					</Route>
-					<Route exact path={`/browse/sets`}>
+					<Route exact path={`${url}/sets`}>
 						<Sets path={path} />
 					</Route>
-					<Route exact path={`/browse/card/:id`}>
-						<IndivCard />
+					<Route exact path={`${url}/card/:id`}>
+						<IndivCard path={path} />
 					</Route>
 				</Switch>
 			</Router>

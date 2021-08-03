@@ -11,6 +11,13 @@ const UserContextProvider = ({ children }) => {
 			console.log(localUser);
 		}
 	}, []);
+
+	useEffect(() => {
+		if (currentUser) {
+			localStorage.setItem("currentUser", JSON.stringify(currentUser));
+			console.log("changed");
+		}
+	}, [currentUser]);
 	return (
 		<UserContext.Provider value={{ currentUser, setCurrentUser }}>
 			{children}
