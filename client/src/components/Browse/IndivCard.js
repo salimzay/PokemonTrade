@@ -12,7 +12,7 @@ const IndivCard = ({ path }) => {
 	const [listMessage, setListMessage] = useState("");
 	const [inWishList, setInWishList] = useState(false);
 	const [wishListMessage, setWishListMessage] = useState("");
-	const { currentUser } = useContext(UserContext);
+	const { currentUser, setCurrentUser } = useContext(UserContext);
 
 	useEffect(() => {
 		setCardStatus("loading");
@@ -46,7 +46,7 @@ const IndivCard = ({ path }) => {
 				}
 				setCardStatus("idle");
 			});
-	}, [currentUser, id]);
+	}, [id]);
 
 	const capitalize = (string) => {
 		return string[0].toUpperCase() + string.slice(1);
@@ -62,11 +62,11 @@ const IndivCard = ({ path }) => {
 		if (indexOfCard !== -1) {
 			user.list.splice(indexOfCard, 1);
 		} else {
-			user.list.push({ id: card.id });
+			user.list.push({ ...card, inBinder: false });
 		}
 		const request = JSON.stringify({ list: user.list });
 
-		localStorage.setItem("currentUser", JSON.stringify(user));
+		setCurrentUser(user);
 		setListMessage("Loading...");
 		fetch(`/api/users/${user._id}`, {
 			method: "PUT",
@@ -96,11 +96,11 @@ const IndivCard = ({ path }) => {
 		if (indexOfCard !== -1) {
 			user.wishList.splice(indexOfCard, 1);
 		} else {
-			user.wishList.push({ id: card.id });
+			user.wishList.push({ ...card });
 		}
 		const request = JSON.stringify({ wishList: user.wishList });
 
-		localStorage.setItem("currentUser", JSON.stringify(user));
+		setCurrentUser(user);
 		setWishListMessage("Loading...");
 		fetch(`/api/users/${user._id}`, {
 			method: "PUT",

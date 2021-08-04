@@ -33,10 +33,10 @@ const Header = () => {
 							<StyledNavLink to="#">Chat</StyledNavLink>
 						</StyledNavItem>
 						<StyledNavItem>
-							<StyledNavLink to="#">Wish List</StyledNavLink>
+							<StyledNavLink to="/lists/wishlist">Wish List</StyledNavLink>
 						</StyledNavItem>
 						<StyledNavItem>
-							<StyledNavLink to="#">My List</StyledNavLink>
+							<StyledNavLink to="/lists/mylist">My List</StyledNavLink>
 						</StyledNavItem>
 						<StyledNavItem>
 							<StyledNavLink to="#">Profile</StyledNavLink>
