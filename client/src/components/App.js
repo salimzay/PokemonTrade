@@ -9,6 +9,7 @@ import Header from "./Header";
 import Homepage from "./Homepage";
 import Footer from "./Footer";
 import Browse from "./Browse";
+import List from "./List";
 
 const App = () => {
 	return (
@@ -30,6 +31,9 @@ const App = () => {
 							</Route>
 							<Route path="/browse">
 								<Browse />
+							</Route>
+							<Route path="/lists/:list">
+								<List />
 							</Route>
 						</Switch>
 					</Main>

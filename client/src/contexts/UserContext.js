@@ -15,6 +15,18 @@ const UserContextProvider = ({ children }) => {
 	useEffect(() => {
 		if (currentUser) {
 			localStorage.setItem("currentUser", JSON.stringify(currentUser));
+			const request = JSON.stringify(currentUser);
+			fetch(`/api/users/${currentUser._id}`, {
+				method: "PUT",
+				headers: {
+					"content-type": "application/json",
+				},
+				body: request,
+			})
+				.then((res) => res.json())
+				.then((data) => {
+					data.status === 200 && console.log("WOrkd");
+				});
 			console.log("changed");
 		}
 	}, [currentUser]);
