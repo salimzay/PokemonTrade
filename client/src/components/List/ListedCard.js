@@ -18,7 +18,6 @@ const ListedCard = ({ type, card }) => {
 		const cardIndex = user.list.findIndex((userCard) => {
 			return card.id === userCard.id;
 		});
-		console.log(user);
 		user.list.splice(cardIndex, 1);
 		setCurrentUser(user);
 	};
@@ -28,7 +27,6 @@ const ListedCard = ({ type, card }) => {
 		const cardIndex = user.wishList.findIndex((userCard) => {
 			return card.id === userCard.id;
 		});
-		console.log(user);
 		user.wishList.splice(cardIndex, 1);
 		setCurrentUser(user);
 	};
@@ -55,7 +53,6 @@ const ListedCard = ({ type, card }) => {
 		}
 		// update user
 		setCurrentUser(user);
-		console.log("worked");
 	};
 
 	return (

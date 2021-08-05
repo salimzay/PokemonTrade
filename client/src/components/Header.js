@@ -39,7 +39,7 @@ const Header = () => {
 							<StyledNavLink to="/lists/mylist">My List</StyledNavLink>
 						</StyledNavItem>
 						<StyledNavItem>
-							<StyledNavLink to="#">Profile</StyledNavLink>
+							<StyledNavLink to="/profile">Profile</StyledNavLink>
 						</StyledNavItem>
 						<StyledNavItem>
 							<StyledButton onClick={handleLogout}>Logout</StyledButton>

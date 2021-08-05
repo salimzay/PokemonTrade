@@ -24,7 +24,6 @@ const Sets = ({ path }) => {
 		)
 			.then((res) => res.json())
 			.then((parsed) => {
-				console.log(parsed.data);
 				const calculatePageCount = Math.ceil(parsed.totalCount / pageSize);
 				setPageCount(calculatePageCount);
 				setSets(parsed.data);

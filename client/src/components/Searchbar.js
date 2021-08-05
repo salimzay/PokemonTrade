@@ -7,7 +7,6 @@ const Searchbar = ({ length }) => {
 	const [searchToggle, setSearchToggle] = useState(false);
 	const [suggestions, setSuggestions] = useState(null);
 	const redirect = useHistory();
-	console.log(redirect.location.state);
 
 	useEffect(() => {
 		searchValue &&
@@ -18,7 +17,6 @@ const Searchbar = ({ length }) => {
 			)
 				.then((res) => res.json())
 				.then((parsed) => {
-					console.log(parsed);
 					setSuggestions(parsed.data);
 				});
 	}, [searchValue, length]);

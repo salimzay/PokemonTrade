@@ -14,7 +14,6 @@ const CardBlock = ({ card }) => {
 			const inList = currentUser.list.some(
 				(listCard) => listCard.id === card.id
 			);
-			console.log(inList);
 			setChecked(inList);
 		}
 	}, []);
@@ -25,7 +24,6 @@ const CardBlock = ({ card }) => {
 	// 	let indexOfCard = user.list.findIndex(
 	// 		(listCard) => listCard.id === card.id
 	// 	);
-	// 	console.log(indexOfCard);
 	// 	if (indexOfCard !== -1) {
 	// 		user.list.splice(indexOfCard, 1);
 	// 	} else {

@@ -10,6 +10,7 @@ import Homepage from "./Homepage";
 import Footer from "./Footer";
 import Browse from "./Browse";
 import List from "./List";
+import Profile from "./Profile";
 
 const App = () => {
 	return (
@@ -34,6 +35,9 @@ const App = () => {
 							</Route>
 							<Route path="/lists/:list">
 								<List />
+							</Route>
+							<Route path="/profile">
+								<Profile />
 							</Route>
 						</Switch>
 					</Main>

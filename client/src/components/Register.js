@@ -14,7 +14,6 @@ const Register = () => {
 	const redirect = useHistory();
 
 	const handleFormData = (ev, input) => {
-		console.log(input, formData[input]);
 		setError("");
 		switch (input) {
 			case "username":
@@ -75,7 +74,6 @@ const Register = () => {
 		} else if (formData.password !== confirmPassword) {
 			setError("Your passwords do not match");
 		} else {
-			console.log(formData);
 			fetch("/api/users", {
 				method: "POST",
 				headers: {

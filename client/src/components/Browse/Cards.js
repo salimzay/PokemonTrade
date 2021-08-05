@@ -8,7 +8,6 @@ import Loading from "../Loading";
 
 const Cards = () => {
 	let { name, value } = useParams();
-	console.log(name, value);
 	const [cardsPerPage, setCardsPerPage] = useState(50);
 	const [cards, setCards] = useState([]);
 	const [cardsStatus, setCardsStatus] = useState("idle");

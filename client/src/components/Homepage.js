@@ -30,7 +30,6 @@ const Homepage = () => {
 						imagesArray.push(card.images.small);
 					}
 				});
-				console.log([...imagesArray, ...imagesArray]);
 				setImages([...imagesArray, ...imagesArray]);
 			});
 	}, []);

@@ -8,7 +8,6 @@ const UserContextProvider = ({ children }) => {
 		const localUser = JSON.parse(localStorage.getItem("currentUser"));
 		if (localUser) {
 			setCurrentUser(localUser);
-			console.log(localUser);
 		}
 	}, []);
 
@@ -27,7 +26,6 @@ const UserContextProvider = ({ children }) => {
 				.then((data) => {
 					data.status === 200 && console.log("WOrkd");
 				});
-			console.log("changed");
 		}
 	}, [currentUser]);
 	return (

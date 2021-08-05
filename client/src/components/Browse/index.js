@@ -14,7 +14,6 @@ import Sidebar from "./Sidebar";
 
 const Browse = () => {
 	let { path, url } = useRouteMatch();
-	console.log(path, url);
 	return (
 		<Wrapper>
 			<Sidebar />

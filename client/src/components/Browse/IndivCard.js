@@ -53,12 +53,10 @@ const IndivCard = ({ path }) => {
 	};
 
 	const handleMyList = (card) => {
-		console.log(card);
 		const user = JSON.parse(localStorage.getItem("currentUser"));
 		let indexOfCard = user.list.findIndex(
 			(listCard) => listCard.id === card.id
 		);
-		console.log(indexOfCard);
 		if (indexOfCard !== -1) {
 			user.list.splice(indexOfCard, 1);
 		} else {
@@ -83,16 +81,13 @@ const IndivCard = ({ path }) => {
 					setListMessage(inList ? "Add to List" : "Remove from List");
 				}, 1000);
 			});
-		console.log(user);
 	};
 
 	const handleWishList = (card) => {
-		console.log(card);
 		const user = JSON.parse(localStorage.getItem("currentUser"));
 		let indexOfCard = user.wishList.findIndex(
 			(listCard) => listCard.id === card.id
 		);
-		console.log(indexOfCard);
 		if (indexOfCard !== -1) {
 			user.wishList.splice(indexOfCard, 1);
 		} else {
@@ -121,7 +116,6 @@ const IndivCard = ({ path }) => {
 					);
 				}, 1000);
 			});
-		console.log(user);
 	};
 
 	return (
