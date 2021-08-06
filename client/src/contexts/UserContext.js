@@ -24,7 +24,7 @@ const UserContextProvider = ({ children }) => {
 			})
 				.then((res) => res.json())
 				.then((data) => {
-					data.status === 200 && console.log("WOrkd");
+					data.status === 200 && console.log("Worked");
 				});
 		}
 	}, [currentUser]);
