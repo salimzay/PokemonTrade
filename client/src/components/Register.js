@@ -12,6 +12,9 @@ const Register = () => {
 	const { setCurrentUser } = useContext(UserContext);
 
 	const redirect = useHistory();
+	const capitalize = (word) => {
+		return word[0].toUpperCase() + word.slice(1);
+	};
 
 	const handleFormData = (ev, input) => {
 		setError("");
@@ -21,11 +24,11 @@ const Register = () => {
 				break;
 
 			case "firstName":
-				setFormData({ ...formData, firstName: ev.target.value });
+				setFormData({ ...formData, firstName: capitalize(ev.target.value) });
 				break;
 
 			case "lastName":
-				setFormData({ ...formData, lastName: ev.target.value });
+				setFormData({ ...formData, lastName: capitalize(ev.target.value) });
 				break;
 
 			case "email":
@@ -37,15 +40,18 @@ const Register = () => {
 				break;
 
 			case "city":
-				setFormData({ ...formData, city: ev.target.value });
+				setFormData({ ...formData, city: capitalize(ev.target.value) });
 				break;
 
 			case "province/state":
-				setFormData({ ...formData, "province/state": ev.target.value });
+				setFormData({
+					...formData,
+					"province/state": capitalize(ev.target.value),
+				});
 				break;
 
 			case "country":
-				setFormData({ ...formData, country: ev.target.value });
+				setFormData({ ...formData, country: capitalize(ev.target.value) });
 				break;
 
 			default:

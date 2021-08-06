@@ -33,7 +33,18 @@ const createUser = async (req, res) => {
 		const _id = uuidv4();
 		const list = [];
 		const wishList = [];
-		const newBody = { _id, list, wishList, ...req.body };
+		const createdAt = new Date();
+		const friends = [];
+		const friendRequests = [];
+		const newBody = {
+			_id,
+			list,
+			wishList,
+			createdAt,
+			friends,
+			friendRequests,
+			...req.body,
+		};
 		try {
 			const client = await connectToClient(MONGO_URI, options);
 
