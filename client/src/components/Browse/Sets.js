@@ -4,13 +4,15 @@ import styled from "styled-components";
 import Loading from "../Loading";
 import Pagination from "./Pagination";
 
+// Browsing page where all pokemon sets are displayed
 const Sets = ({ path }) => {
 	const [sets, setSets] = useState([]);
 	const [setsStatus, setSetsStatus] = useState("idle");
-	const [pageSize, setPageSize] = useState(30);
+	const [pageSize] = useState(30);
 	const [pageNumber, setPageNumber] = useState("1");
 	const [pageCount, setPageCount] = useState("1");
 
+	// Fetches the all sets from the API with specified page number and page size
 	useEffect(() => {
 		setSetsStatus("loading");
 		fetch(
@@ -29,7 +31,7 @@ const Sets = ({ path }) => {
 				setSets(parsed.data);
 				setSetsStatus("idle");
 			});
-	}, [pageNumber]);
+	}, [pageNumber, pageSize]);
 
 	return (
 		<Wrapper>

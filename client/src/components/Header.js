@@ -30,7 +30,7 @@ const Header = () => {
 				{currentUser ? (
 					<RightSide>
 						<StyledNavItem>
-							<StyledNavLink to="#">Chat</StyledNavLink>
+							<StyledNavLink to="/social">Social</StyledNavLink>
 						</StyledNavItem>
 						<StyledNavItem>
 							<StyledNavLink to="/lists/wishlist">Wish List</StyledNavLink>

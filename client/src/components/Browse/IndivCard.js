@@ -4,6 +4,7 @@ import styled from "styled-components";
 import Loading from "../Loading";
 import { UserContext } from "../../contexts/UserContext";
 
+// Card page where the details are
 const IndivCard = ({ path }) => {
 	const { id } = useParams();
 	const [card, setCard] = useState(null);
@@ -14,6 +15,7 @@ const IndivCard = ({ path }) => {
 	const [wishListMessage, setWishListMessage] = useState("");
 	const { currentUser, setCurrentUser } = useContext(UserContext);
 
+	// Fetches the card inf from APU
 	useEffect(() => {
 		setCardStatus("loading");
 		fetch(`https://api.pokemontcg.io/v2/cards/${id}`, {
@@ -52,6 +54,7 @@ const IndivCard = ({ path }) => {
 		return string[0].toUpperCase() + string.slice(1);
 	};
 
+	// Add or remove the card from the user's list
 	const handleMyList = (card) => {
 		const user = JSON.parse(localStorage.getItem("currentUser"));
 		let indexOfCard = user.list.findIndex(
@@ -83,6 +86,7 @@ const IndivCard = ({ path }) => {
 			});
 	};
 
+	// Add or remove the card from the user's wish list
 	const handleWishList = (card) => {
 		const user = JSON.parse(localStorage.getItem("currentUser"));
 		let indexOfCard = user.wishList.findIndex(

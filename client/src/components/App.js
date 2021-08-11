@@ -1,18 +1,25 @@
-import React from "react";
+import React, { useContext } from "react";
 import styled from "styled-components";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import {
+	BrowserRouter as Router,
+	Switch,
+	Route,
+	Redirect,
+} from "react-router-dom";
 import GlobalStyles from "./GlobalStyles";
 import Login from "./Login";
 import Register from "./Register";
-import {} from "../contexts/UserContext";
+import { UserContext } from "../contexts/UserContext";
 import Header from "./Header";
 import Homepage from "./Homepage";
 import Footer from "./Footer";
 import Browse from "./Browse";
 import List from "./List";
 import Profile from "./Profile";
+import Social from "./Social";
 
 const App = () => {
+	const { currentUser } = useContext(UserContext);
 	return (
 		<div>
 			<GlobalStyles />
@@ -34,10 +41,13 @@ const App = () => {
 								<Browse />
 							</Route>
 							<Route path="/lists/:list">
-								<List />
+								{currentUser ? <List /> : <Redirect to="/" />}
 							</Route>
 							<Route path="/profile">
-								<Profile />
+								{currentUser ? <Profile /> : <Redirect to="/" />}
+							</Route>
+							<Route path="/social">
+								{currentUser ? <Social /> : <Redirect to="/" />}
 							</Route>
 						</Switch>
 					</Main>
@@ -56,6 +66,8 @@ const Wrapper = styled.div`
 
 const Main = styled.main`
 	flex: 1;
+	display: flex;
+	flex-direction: column;
 `;
 
 export default App;

@@ -12,9 +12,9 @@ const Homepage = () => {
 		if (currentUser) {
 			history.push("/browse");
 		}
-	}, []);
+	}, [currentUser, history]);
 
-	const [images, setImages] = useState(null);
+	const [images, setImages] = useState([]);
 	useEffect(() => {
 		fetch("https://api.pokemontcg.io/v2/cards?q=set.id:base1", {
 			headers: {

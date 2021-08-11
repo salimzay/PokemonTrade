@@ -11,6 +11,7 @@ const options = {
 
 const dbName = "final-project";
 
+// Anytime a handler needs to connect to mongodb
 const connectToClient = async (MONGO_URI, options) => {
 	try {
 		const client = await new MongoClient(MONGO_URI, options);
@@ -21,6 +22,7 @@ const connectToClient = async (MONGO_URI, options) => {
 	}
 };
 
+// Default error when try/catching
 const sendCatchError = (err, res) => {
 	console.log(err);
 	res.status(400).json({ status: 400, message: err.message });
@@ -30,6 +32,7 @@ const sendCatchError = (err, res) => {
 const createUser = async (req, res) => {
 	const { username, firstName, lastName, password, email } = req.body;
 	if (username && firstName && lastName && password && email) {
+		// Sets the default variables
 		const _id = uuidv4();
 		const list = [];
 		const wishList = [];
@@ -45,15 +48,20 @@ const createUser = async (req, res) => {
 			friendRequests,
 			...req.body,
 		};
+
 		try {
 			const client = await connectToClient(MONGO_URI, options);
 
 			const db = client.db(dbName);
+
+			// Validating email
 			const existingEmail = await db.collection("users").findOne({ email });
 			if (!existingEmail) {
 				const existingUsername = await db
 					.collection("users")
 					.findOne({ username });
+
+				// Validating Username
 				if (!existingUsername) {
 					const result = await db.collection("users").insertOne(newBody);
 					assert.equal(true, result.acknowledged);
@@ -79,6 +87,7 @@ const createUser = async (req, res) => {
 };
 
 // Get All Users
+// Returns all users' id
 const getUsersId = async (req, res) => {
 	try {
 		const client = await connectToClient(MONGO_URI, options);
@@ -174,7 +183,7 @@ const userLogin = async (req, res) => {
 	const { username, password } = req.body;
 	try {
 		const client = await connectToClient(MONGO_URI, options);
-		const db = await client.db(dbName);
+		const db = client.db(dbName);
 
 		const user = await db.collection("users").findOne({ username: username });
 
@@ -196,6 +205,135 @@ const userLogin = async (req, res) => {
 	}
 };
 
+const getFriendRequests = async (req, res) => {
+	// Get
+	const { userId } = req.params;
+	const query = { _id: userId };
+
+	try {
+		const client = await connectToClient(MONGO_URI, options);
+		const db = await client.db(dbName);
+
+		const user = await db.collection("users").findOne(query);
+		if (user) {
+			const friendRequests = user.friendRequests;
+			res.status(200).json({ status: 200, data: friendRequests });
+		} else {
+			res
+				.status(404)
+				.json({ status: 404, message: "User not found", data: userId });
+		}
+	} catch (err) {
+		sendCatchError(err, res);
+	}
+};
+
+const createFriendRequest = async (req, res) => {
+	// PUT
+	const { senderId, receiverId } = req.body;
+	const query = { _id: receiverId };
+	const update = { $push: { friendRequests: senderId } };
+
+	try {
+		const client = await connectToClient(MONGO_URI, options);
+		const db = client.db(dbName);
+		const receiver = await db.collection("users").findOne(query);
+		if (receiver) {
+			const result = await db.collection("users").updateOne(query, update);
+			assert.equal(true, result.acknowledged);
+
+			res.status(200).json({ status: 200, data: receiverId, success: true });
+		} else {
+			res
+				.status(404)
+				.json({ status: 404, message: "User not found", receiverId });
+		}
+	} catch (err) {
+		console.log("test");
+		sendCatchError(err, res);
+	}
+};
+
+const acceptFriendRequest = async (req, res) => {
+	const { currentUserId, senderId } = req.body;
+	const currentUserQuery = { _id: currentUserId };
+	const senderQuery = { _id: senderId };
+
+	try {
+		const client = await connectToClient(MONGO_URI, options);
+		const db = await client.db(dbName);
+
+		// Add sender to friends
+		const senderUser = await db.collection("users").findOne(senderQuery);
+		const currentUser = await db.collection("users").findOne(currentUserQuery);
+
+		if (senderUser && currentUser) {
+			const currentUserResult = await db
+				.collection("users")
+				.updateOne(currentUserQuery, { $push: { friends: senderId } });
+			assert.equal(true, currentUserResult.acknowledged);
+
+			const senderUserResult = await db
+				.collection("users")
+				.updateOne(senderQuery, { $push: { friends: currentUserId } });
+			assert.equal(true, senderUserResult.acknowledged);
+		} else {
+			res
+				.status(404)
+				.json({ status: 404, data: senderId, message: "User not found" });
+		}
+
+		// Remove friend request from friendRequests array
+		const result = await db
+			.collection("users")
+			.updateOne(currentUserQuery, { $pull: { friendRequests: senderId } });
+		assert.equal(true, result.acknowledged);
+
+		// Return response if successful
+		res.status(200).json({
+			status: 200,
+			data: { senderId, currentUserId },
+			success: true,
+		});
+	} catch (err) {
+		sendCatchError(err, res);
+	}
+};
+
+const declineFriendRequest = async (req, res) => {
+	// PUT
+	const { currentUserId, senderId } = req.body;
+	const currentUserQuery = { _id: currentUserId };
+	const senderQuery = { _id: senderId };
+
+	try {
+		const client = await connectToClient(MONGO_URI, options);
+		const db = await client.db(dbName);
+
+		const senderUser = await db.collection("users").findOne(senderQuery);
+		const currentUser = await db.collection("users").findOne(currentUserQuery);
+		if (senderUser && currentUser) {
+			// Remove friend request from friendRequests array
+			const result = await db
+				.collection("users")
+				.updateOne(currentUserQuery, { $pull: { friendRequests: senderId } });
+			assert.equal(true, result.acknowledged);
+		} else {
+			res
+				.status(404)
+				.json({ status: 404, data: senderId, message: "User not found" });
+		}
+
+		// Return response if successful
+		res.status(200).json({
+			status: 200,
+			success: true,
+		});
+	} catch (err) {
+		sendCatchError(err, res);
+	}
+};
+
 module.exports = {
 	createUser,
 	getUser,
@@ -203,4 +341,8 @@ module.exports = {
 	updateUser,
 	deleteUser,
 	userLogin,
+	createFriendRequest,
+	acceptFriendRequest,
+	declineFriendRequest,
+	getFriendRequests,
 };

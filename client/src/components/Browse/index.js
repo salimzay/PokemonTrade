@@ -1,10 +1,5 @@
 import React from "react";
-import {
-	BrowserRouter as Router,
-	Switch,
-	Route,
-	useRouteMatch,
-} from "react-router-dom";
+import { Switch, Route, useRouteMatch } from "react-router-dom";
 import styled from "styled-components";
 import Cards from "./Cards";
 import Home from "./Home";
@@ -13,7 +8,7 @@ import Sets from "./Sets";
 import Sidebar from "./Sidebar";
 
 const Browse = () => {
-	let { path, url } = useRouteMatch();
+	let { path } = useRouteMatch();
 	return (
 		<Wrapper>
 			<Sidebar />

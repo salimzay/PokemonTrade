@@ -1,13 +1,20 @@
-import React from "react";
+import React, { useContext } from "react";
+import { Link } from "react-router-dom";
 import { FiMessageCircle, FiUser } from "react-icons/fi";
 import styled from "styled-components";
 import Loading from "../Loading";
+import { UserContext } from "../../contexts/UserContext";
+import { ChatContext } from "../../contexts/ChatContext";
 
 const Friends = ({ user, friends, friendsStatus }) => {
+	const { currentUser } = useContext(UserContext);
+	const { handleMessage } = useContext(ChatContext);
 	const capitalize = (word) => {
 		return word[0].toUpperCase() + word.slice(1);
 	};
-	return (
+	return friends.length === 0 ? (
+		<div>This user has no friends</div>
+	) : (
 		<div>
 			{friendsStatus === "loading" ? (
 				<Loading />
@@ -23,10 +30,17 @@ const Friends = ({ user, friends, friendsStatus }) => {
 									<div>@{friend.username}</div>
 								</StyledInfo>
 								<ButtonBlock>
-									<StyledButton>
-										<FiMessageCircle />
-									</StyledButton>
-									<StyledButton>
+									{currentUser.friends.includes(friend._id) && (
+										<StyledButton
+											to="/social/chat"
+											onClick={() => {
+												handleMessage(currentUser._id, friend._id);
+											}}
+										>
+											<FiMessageCircle />
+										</StyledButton>
+									)}
+									<StyledButton to={`/social/users/${friend._id}`}>
 										<FiUser />
 									</StyledButton>
 								</ButtonBlock>
@@ -76,7 +90,7 @@ const ButtonBlock = styled.div`
 	justify-content: space-around;
 `;
 
-const StyledButton = styled.button`
+const StyledButton = styled(Link)`
 	display: flex;
 	flex-direction: column;
 	align-items: center;

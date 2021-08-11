@@ -6,17 +6,21 @@ import CardBlock from "./CardBlock";
 import Pagination from "./Pagination";
 import Loading from "../Loading";
 
+// Base browsing, where name and value are the queries
 const Cards = () => {
 	let { name, value } = useParams();
-	const [cardsPerPage, setCardsPerPage] = useState(50);
+	const [cardsPerPage] = useState(50);
 	const [cards, setCards] = useState([]);
 	const [cardsStatus, setCardsStatus] = useState("idle");
 	const [pageCount, setPageCount] = useState(1);
 	const [pageNumber, setPageNumber] = useState(1);
-	const [cardCount, setCardCount] = useState(0);
+	// const [cardCount, setCardCount] = useState(0);
 	const [headerName, setHeaderName] = useState(value);
 	const [bannerImg, setBannerImg] = useState("");
 
+	// Special case if the name parameter is called "name"
+	// Otherwise, it searches through the Pokemon API using the query, then sets the cards state as the results
+	// Also, we can specify to the API the number of cards we want per page, and the page number
 	useEffect(() => {
 		setCardsStatus("loading");
 		let apiName = name;
@@ -39,7 +43,7 @@ const Cards = () => {
 			.then((parsed) => {
 				const calculatePageCount = Math.ceil(parsed.totalCount / cardsPerPage);
 				setPageCount(calculatePageCount);
-				setCardCount(parsed.totalCount);
+				// setCardCount(parsed.totalCount);
 				setCards(parsed.data);
 				setCardsStatus("idle");
 			});

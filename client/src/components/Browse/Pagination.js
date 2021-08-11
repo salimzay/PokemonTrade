@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 
 const Pagination = ({ pageNumber, pageCount, setPageNumber }) => {
+	// The displayed range
 	const pageRange = (current, count) => {
 		const pageRange = [];
 		let firstPage = 0;
@@ -25,6 +26,7 @@ const Pagination = ({ pageNumber, pageCount, setPageNumber }) => {
 		}
 		return pageRange;
 	};
+
 	const paginationRange = pageRange(pageNumber, pageCount);
 
 	const nextPage = (ev) => {
