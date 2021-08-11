@@ -5,28 +5,26 @@ import { UserContext } from "../../../contexts/UserContext";
 import Loading from "../../Loading";
 
 // Lists all conversations where current user is a member
-const Conversations = () => {
+const Conversations = ({ messages }) => {
 	const { currentUser } = useContext(UserContext);
 	const { setCurrentChat } = useContext(ChatContext);
 	const [conversations, setConversations] = useState([]);
-	const [converstationsStatus, setConverstationsStatus] = useState("idle");
+	const [conversationsStatus, setConversationsStatus] = useState("idle");
 
 	useEffect(() => {
-		setConverstationsStatus("loading");
+		setConversationsStatus("loading");
 		fetch(`/api/conversations/${currentUser._id}`)
 			.then((res) => res.json())
 			.then((parsed) => {
 				setConversations(parsed.data);
-				setConverstationsStatus("idle");
+				setConversationsStatus("idle");
 			});
-	}, [currentUser]);
+	}, [currentUser, messages]);
 
 	return (
 		<Wrapper>
 			<Header>Conversations</Header>
-			{converstationsStatus === "loading" ? (
-				<Loading />
-			) : (
+			{conversations &&
 				conversations.map((conversation) => {
 					return (
 						<IndivConversation
@@ -35,8 +33,7 @@ const Conversations = () => {
 							setCurrentChat={setCurrentChat}
 						/>
 					);
-				})
-			)}
+				})}
 		</Wrapper>
 	);
 };

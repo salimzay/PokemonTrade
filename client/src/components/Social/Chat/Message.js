@@ -9,7 +9,6 @@ const Message = ({ message, receiver }) => {
 	const own = message.sender === currentUser._id;
 	const timestamp = new Date(message.createdAt);
 	const minutesSince = (Date.now() - timestamp.getTime()) / 60000;
-	console.log(minutesSince);
 
 	const add0 = (num) => {
 		if (num < 10) {

@@ -35,7 +35,7 @@ const App = () => {
 								<Register />
 							</Route>
 							<Route exact path="/login">
-								<Login />
+								{currentUser ? <Redirect to="/" /> : <Login />}
 							</Route>
 							<Route path="/browse">
 								<Browse />

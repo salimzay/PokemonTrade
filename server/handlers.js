@@ -1,6 +1,7 @@
 const { MongoClient } = require("mongodb");
 const assert = require("assert");
 const { v4: uuidv4 } = require("uuid");
+const bcrypt = require("bcrypt");
 require("dotenv").config();
 
 const { MONGO_URI } = process.env;
@@ -39,6 +40,7 @@ const createUser = async (req, res) => {
 		const createdAt = new Date();
 		const friends = [];
 		const friendRequests = [];
+		const hashedPassword = await bcrypt.hash(password, 10);
 		const newBody = {
 			_id,
 			list,
@@ -47,6 +49,7 @@ const createUser = async (req, res) => {
 			friends,
 			friendRequests,
 			...req.body,
+			password: hashedPassword,
 		};
 
 		try {
@@ -78,8 +81,10 @@ const createUser = async (req, res) => {
 					.status(400)
 					.json({ status: 400, message: "That email is already taken" });
 			}
+			client.close();
 		} catch (err) {
 			sendCatchError(err, res);
+			client.close();
 		}
 	} else {
 		res.status(400).json({ status: 400, message: "Missing a required field" });
@@ -98,8 +103,10 @@ const getUsersId = async (req, res) => {
 		});
 
 		res.status(200).json({ status: 200, data: usersId });
+		client.close();
 	} catch (err) {
 		sendCatchError(err, res);
+		client.close();
 	}
 };
 
@@ -118,8 +125,10 @@ const getUser = async (req, res) => {
 		} else {
 			res.status(404).json({ status: 404, message: "User not found" });
 		}
+		client.close();
 	} catch (err) {
 		sendCatchError(err, res);
+		client.close();
 	}
 };
 
@@ -143,8 +152,10 @@ const updateUser = async (req, res) => {
 		} else {
 			res.status(404).json({ status: 404, message: "User not found" });
 		}
+		client.close();
 	} catch (err) {
 		sendCatchError(err.stack, res);
+		client.close();
 	}
 };
 
@@ -168,6 +179,7 @@ const deleteUser = async (req, res) => {
 			} else {
 				res.status(404).json({ status: 404, message: "User not found" });
 			}
+			client.close();
 		} catch (err) {
 			sendCatchError(err, res);
 		}
@@ -188,7 +200,7 @@ const userLogin = async (req, res) => {
 		const user = await db.collection("users").findOne({ username: username });
 
 		if (user) {
-			if (user.password === password) {
+			if (await bcrypt.compare(password, user.password)) {
 				res.status(200).json({ status: 200, data: user });
 			} else {
 				res
@@ -200,8 +212,10 @@ const userLogin = async (req, res) => {
 				.status(404)
 				.json({ status: 404, message: "Username or password is incorrect" });
 		}
+		client.close();
 	} catch (err) {
 		sendCatchError(err, res);
+		client.close();
 	}
 };
 
@@ -223,8 +237,10 @@ const getFriendRequests = async (req, res) => {
 				.status(404)
 				.json({ status: 404, message: "User not found", data: userId });
 		}
+		client.close();
 	} catch (err) {
 		sendCatchError(err, res);
+		client.close();
 	}
 };
 
@@ -248,9 +264,11 @@ const createFriendRequest = async (req, res) => {
 				.status(404)
 				.json({ status: 404, message: "User not found", receiverId });
 		}
+		client.close();
 	} catch (err) {
 		console.log("test");
 		sendCatchError(err, res);
+		client.close();
 	}
 };
 
@@ -295,8 +313,10 @@ const acceptFriendRequest = async (req, res) => {
 			data: { senderId, currentUserId },
 			success: true,
 		});
+		client.close();
 	} catch (err) {
 		sendCatchError(err, res);
+		client.close();
 	}
 };
 
@@ -329,8 +349,10 @@ const declineFriendRequest = async (req, res) => {
 			status: 200,
 			success: true,
 		});
+		client.close();
 	} catch (err) {
 		sendCatchError(err, res);
+		client.close();
 	}
 };
 
