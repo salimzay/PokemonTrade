@@ -1,16 +1,17 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import Chatbox from "./Chatbox";
 import Conversations from "./Conversations";
 
 const Chat = () => {
+	const [messages, setMessages] = useState([]);
 	return (
 		<Wrapper>
 			<ChatConversationsWrapper>
-				<Conversations />
+				<Conversations messages={messages} />
 			</ChatConversationsWrapper>
 			<ChatBoxWrapper>
-				<Chatbox />
+				<Chatbox messages={messages} setMessages={setMessages} />
 			</ChatBoxWrapper>
 		</Wrapper>
 	);

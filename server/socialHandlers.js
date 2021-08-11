@@ -56,8 +56,10 @@ const createConversation = async (req, res) => {
 
 			res.status(201).json({ status: 201, data: conversation });
 		}
+		client.close();
 	} catch (err) {
 		sendCatchError(err, res);
+		client.close();
 	}
 };
 
@@ -73,8 +75,10 @@ const getConversations = async (req, res) => {
 			.find(query)
 			.toArray();
 		res.status(200).json({ status: 200, data: conversations });
+		client.close();
 	} catch (err) {
 		sendCatchError(err, res);
+		client.close();
 	}
 };
 
@@ -94,8 +98,10 @@ const createMessage = async (req, res) => {
 		assert.equal(true, result.acknowledged);
 
 		res.status(201).json({ status: 201, data: message });
+		client.close();
 	} catch (err) {
 		sendCatchError(err, res);
+		client.close();
 	}
 };
 
@@ -108,8 +114,10 @@ const getMessages = async (req, res) => {
 		const db = client.db(dbName);
 		const messages = await db.collection("messages").find(query).toArray();
 		res.status(200).json({ status: 200, data: messages });
+		client.close();
 	} catch (err) {
 		sendCatchError(err, res);
+		client.close();
 	}
 };
 module.exports = {

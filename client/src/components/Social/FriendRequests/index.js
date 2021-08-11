@@ -17,7 +17,6 @@ const FriendRequests = () => {
 		fetch(`/api/users/getFriendRequests/${currentUser._id}`)
 			.then((res) => res.json())
 			.then((parsed) => {
-				console.log(parsed.data);
 				setFriendRequests(parsed.data);
 				setFriendStatus("idle");
 			});
@@ -25,6 +24,7 @@ const FriendRequests = () => {
 
 	return (
 		<Wrapper>
+			<Header className="header">Friend Requests</Header>
 			{friendStatus === "loading" ? (
 				<Loading />
 			) : friendRequests && friendRequests.length === 0 ? (
@@ -32,7 +32,6 @@ const FriendRequests = () => {
 			) : (
 				friendRequests && (
 					<StyledList>
-						<StyledListItem className="header">Friend Requests</StyledListItem>
 						{friendRequests.map((request) => {
 							return (
 								<FriendRequest
@@ -162,28 +161,24 @@ const Wrapper = styled.div`
 	align-items: center;
 `;
 
+const Header = styled.div`
+	border-bottom: 1px solid var(--main-color);
+	font-size: 24px;
+	font-family: var(--main-font);
+	padding: 1rem;
+`;
+
 const StyledList = styled.ul`
 	width: 100%;
 `;
 
 const StyledListItem = styled.li`
-	border-bottom: 1px solid var(--main-color);
-
 	&:hover {
 		background-color: var(--background-lighten);
 	}
 
 	&:last-child {
 		border: none;
-	}
-
-	&.header {
-		font-size: 24px;
-		font-family: var(--main-font);
-		padding: 1rem;
-		&:hover {
-			background-color: unset;
-		}
 	}
 `;
 

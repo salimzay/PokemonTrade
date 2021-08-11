@@ -35,7 +35,7 @@ const MONTHS = [
 ];
 
 const Profile = () => {
-	const { currentUser } = useContext(UserContext);
+	const { currentUser, setCurrentUser } = useContext(UserContext);
 	const [user, setUser] = useState(null);
 	const [userStatus, setUserStatus] = useState("idle");
 	const [dateJoined, setDateJoined] = useState(null);
@@ -87,6 +87,18 @@ const Profile = () => {
 			});
 		}
 	}, [user]);
+
+	useEffect(() => {
+		fetch(`/api/users/${currentUser._id}`)
+			.then((res) => res.json())
+			.then((parsed) => {
+				console.log(parsed);
+				setCurrentUser({
+					...currentUser,
+					friendRequests: parsed.data.friendRequests,
+				});
+			});
+	}, []);
 
 	return (
 		<Wrapper>

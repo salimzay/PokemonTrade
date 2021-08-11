@@ -6,10 +6,9 @@ import Loading from "../../Loading";
 import Message from "./Message";
 import { ChatContext } from "../../../contexts/ChatContext";
 
-const Chatbox = () => {
+const Chatbox = ({ messages, setMessages }) => {
 	const [receiverUser, setReceiverUser] = useState(null);
 	const [receiverUserStatus, setReceiverUserStatus] = useState("idle");
-	const [messages, setMessages] = useState([]);
 	const [newMessage, setNewMessage] = useState("");
 	const [arrivalMessage, setArrivalMessage] = useState(null);
 	const [socket, setSocket] = useState(null);

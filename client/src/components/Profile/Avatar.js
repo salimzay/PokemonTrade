@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 // To be implemented with image
 const Avatar = ({ user }) => {
-	return <ProfileAvatar>{user.firstName[0]}</ProfileAvatar>;
+	return <ProfileAvatar>{user.firstName[0].toUpperCase()}</ProfileAvatar>;
 };
 
 const ProfileAvatar = styled.div`
