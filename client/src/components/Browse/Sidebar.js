@@ -3,16 +3,6 @@ import { NavLink } from "react-router-dom";
 import styled from "styled-components";
 import { FiChevronLeft } from "react-icons/fi";
 
-// Categories
-// Sets
-// Types
-// SubTypes
-// SuperTypes
-// Rarities
-
-// Page
-// Size 50
-
 const Sidebar = () => {
 	return (
 		<Wrapper>
@@ -33,6 +23,7 @@ export const SidebarList = ({ name }) => {
 	const [nameQuery, setNameQuery] = useState("");
 	const apiQuery = name.toLowerCase();
 
+	// Fetches all values of given category name
 	useEffect(() => {
 		setStatus("loading");
 		fetch(`https://api.pokemontcg.io/v2/${apiQuery}`, {
@@ -46,8 +37,9 @@ export const SidebarList = ({ name }) => {
 				setData(parsed.data);
 				setStatus("idle");
 			});
-	}, []);
+	}, [apiQuery]);
 
+	// Specifying the query name for when searching for that category
 	useEffect(() => {
 		switch (name) {
 			case "Types":
@@ -66,7 +58,7 @@ export const SidebarList = ({ name }) => {
 				setNameQuery(name);
 				break;
 		}
-	}, [nameQuery]);
+	}, [name]);
 
 	return (
 		<div>
@@ -77,7 +69,9 @@ export const SidebarList = ({ name }) => {
 				</DropButton>
 			</div>
 			{status === "loading" ? (
-				<div>Loading</div>
+				<StyledDropMenu className={showCategory && "show"}>
+					Loading
+				</StyledDropMenu>
 			) : (
 				<StyledDropMenu className={showCategory && "show"}>
 					{data &&

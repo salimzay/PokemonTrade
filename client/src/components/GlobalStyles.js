@@ -7,6 +7,7 @@ export default createGlobalStyle`
   */
   
   :root {
+    --main-body-height: calc(100vh - 130px - 2rem);
     --background-color: rgba(50,50,50,1);
     --background-darken: rgba(0, 0, 0, 0.2);
     --background-lighten: rgba(255,255,255,0.1);
@@ -25,6 +26,7 @@ export default createGlobalStyle`
     --Metal: rgba(100,100,120,0.2);
     --Psychic: rgba(160,70,130,0.2);
     --Water: rgba(60,140,200,0.2);
+    --user-chat-color: rgb(58, 122, 225);
   }
 
   html, body, div, span, applet, object, iframe,
@@ -56,7 +58,7 @@ export default createGlobalStyle`
     line-height: 1.5;
     background-color: var(--background-color);
     color: var(--main-color);
-    font-family: var(--main-font);
+    font-family: var(--second-font);
   }
   ol, ul {
     list-style: none;

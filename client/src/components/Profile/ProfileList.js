@@ -1,6 +1,5 @@
 import React from "react";
 import styled from "styled-components";
-import List from "../List";
 import ListedCard from "../List/ListedCard";
 
 const ProfileList = ({ user }) => {
@@ -12,17 +11,20 @@ const ProfileList = ({ user }) => {
 				<StyledList>
 					{user &&
 						user["wishList"].map((item) => {
-							return <ListedCard type="wishlist" card={item} />;
+							return (
+								<ListedCard
+									type="wishlist"
+									card={item}
+									user={user}
+									key={item.id}
+								/>
+							);
 						})}
 				</StyledList>
 			)}
 		</div>
 	);
 };
-
-const Wrapper = styled.div`
-	display: flex;
-`;
 
 const StyledList = styled.ul`
 	border: 1px solid var(--main-color);

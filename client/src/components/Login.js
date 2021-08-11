@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { UserContext } from "../contexts/UserContext";
 import Loading from "./Loading";
 
-// TODO: STYLING, MORE VALIDATION
+// TODO: MORE VALIDATION
 
 const Login = () => {
 	const [username, setUsername] = useState("");
@@ -29,7 +29,6 @@ const Login = () => {
 		ev.preventDefault();
 		setLoginStatus("loading");
 		const request = JSON.stringify({ username, password });
-		console.log(request);
 		fetch(`/api/users/login/`, {
 			method: "POST",
 			headers: {
@@ -39,7 +38,6 @@ const Login = () => {
 		})
 			.then((res) => res.json())
 			.then((parsed) => {
-				console.log(parsed);
 				if (parsed.status === 200) {
 					setCurrentUser(parsed.data);
 					redirect.goBack();

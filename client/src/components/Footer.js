@@ -49,6 +49,7 @@ const Wrapper = styled.div`
 	font-size: 12px;
 	padding: 10px 0;
 	background-color: var(--background-darken);
+	height: 70px;
 `;
 
 const TopNav = styled.div`

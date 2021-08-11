@@ -3,16 +3,19 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { UserContext } from "../../contexts/UserContext";
 
-const ListedCard = ({ type, card }) => {
+// Rendered for each card in a given list
+const ListedCard = ({ type, card, user }) => {
 	const [binderMessage, setBinderMessage] = useState("");
 	const { currentUser, setCurrentUser } = useContext(UserContext);
 
+	// Depending on the card, the message, and consequently the button, will be different
 	useEffect(() => {
 		card.inBinder
 			? setBinderMessage("Remove from Binder")
 			: setBinderMessage("Add to Binder");
-	}, []);
+	}, [card]);
 
+	// Remove the card from personnal list
 	const removeFromMyList = (card) => {
 		const user = { ...currentUser };
 		const cardIndex = user.list.findIndex((userCard) => {
@@ -22,6 +25,7 @@ const ListedCard = ({ type, card }) => {
 		setCurrentUser(user);
 	};
 
+	// Remove the card from wish list
 	const removeFromWishList = (card) => {
 		const user = { ...currentUser };
 		const cardIndex = user.wishList.findIndex((userCard) => {
@@ -31,6 +35,7 @@ const ListedCard = ({ type, card }) => {
 		setCurrentUser(user);
 	};
 
+	// Add or remove card from the binder
 	const handleBinder = (card) => {
 		const user = { ...currentUser };
 		const cardIndex = user.list.findIndex((userCard) => {
@@ -67,22 +72,23 @@ const ListedCard = ({ type, card }) => {
 					{card.rarity && <div>Rarity: {card.rarity}</div>}
 					{card.inBinder && <div>Currently in Binder</div>}
 				</StyledInfo>
-				{type === "wishlist" ? (
-					<ButtonsBlock>
-						<StyledButton onClick={() => removeFromWishList(card)}>
-							Remove from wish list
-						</StyledButton>
-					</ButtonsBlock>
-				) : (
-					<ButtonsBlock>
-						<StyledButton onClick={() => removeFromMyList(card)}>
-							Remove from my list
-						</StyledButton>
-						<StyledButton onClick={() => handleBinder(card)}>
-							{binderMessage}
-						</StyledButton>
-					</ButtonsBlock>
-				)}
+				{user._id === currentUser._id &&
+					(type === "wishlist" ? (
+						<ButtonsBlock>
+							<StyledButton onClick={() => removeFromWishList(card)}>
+								Remove from wish list
+							</StyledButton>
+						</ButtonsBlock>
+					) : (
+						<ButtonsBlock>
+							<StyledButton onClick={() => removeFromMyList(card)}>
+								Remove from my list
+							</StyledButton>
+							<StyledButton onClick={() => handleBinder(card)}>
+								{binderMessage}
+							</StyledButton>
+						</ButtonsBlock>
+					))}
 			</StyledListItem>
 		</Wrapper>
 	);

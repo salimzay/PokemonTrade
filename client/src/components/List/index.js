@@ -5,6 +5,8 @@ import { UserContext } from "../../contexts/UserContext";
 import ListedCard from "./ListedCard";
 
 const List = () => {
+	// List can be for when you visit a list url like /mylist or /wishlist => where useParams will be defined
+	// or it can be from checking a profile list
 	const { list } = useParams();
 	const { currentUser } = useContext(UserContext);
 	let userList,
@@ -29,7 +31,14 @@ const List = () => {
 					<StyledList>
 						{currentUser &&
 							currentUser[userList].map((item) => {
-								return <ListedCard type={list} card={item} />;
+								return (
+									<ListedCard
+										type={list}
+										card={item}
+										user={currentUser}
+										key={item.id}
+									/>
+								);
 							})}
 					</StyledList>
 				)}

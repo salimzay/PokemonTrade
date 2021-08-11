@@ -2,12 +2,15 @@ import React from "react";
 import styled from "styled-components";
 import CardBlock from "../Browse/CardBlock";
 
+// Display all cards where inBinder is true
 const Binder = ({ user }) => {
 	const inBinderArray = user.list.filter((card) => card.inBinder);
-	return (
+	return inBinderArray.length === 0 ? (
+		<div>This user has no cards in the binder</div>
+	) : (
 		<BinderWrapper>
 			{inBinderArray.map((card) => {
-				return <CardBlock card={card} />;
+				return <CardBlock card={card} key={card.id} />;
 			})}
 			<AlignerBlock aria-hidden="true"></AlignerBlock>
 			<AlignerBlock aria-hidden="true"></AlignerBlock>
