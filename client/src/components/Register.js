@@ -64,8 +64,8 @@ const Register = () => {
 	};
 
 	const handleSubmit = (ev) => {
-		setRegisterStatus("loading");
 		ev.preventDefault();
+		setRegisterStatus("loading");
 		if (
 			!formData.username ||
 			!formData.firstName ||
@@ -102,6 +102,7 @@ const Register = () => {
 					setRegisterStatus("idle");
 				});
 		}
+		setRegisterStatus("idle");
 	};
 
 	return (
